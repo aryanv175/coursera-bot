@@ -1,0 +1,12 @@
+what do we need?
+- probably a website
+- shows the coursera course on the left 
+- chat bot on the right
+- you ask questions and it answers, pretty basic
+- using gemini cuz required by client
+- need to use RAG so that gemini only answers based on the info provided by the course and does not go beyonf the scope of the materal
+- backend needs to scrape what material is present on the course page
+- add on
+    - questionnaire or flashcard at the end
+    - authentication
+    - pay wall certain features
