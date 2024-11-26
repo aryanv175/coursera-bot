@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 type CourseData = {
   title: string;
@@ -16,6 +16,8 @@ export default function Home() {
   const [isValidCourse, setIsValidCourse] = useState(false);
   const [courseData, setCourseData] = useState<CourseData | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [iframeUrl, setIframeUrl] = useState('about:blank');
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const isCoursera = (url: string) => {
     try {
@@ -23,6 +25,16 @@ export default function Home() {
       return urlObj.hostname.includes('coursera.org');
     } catch {
       return false;
+    }
+  };
+
+  const loadCourseraPage = () => {
+    setIframeUrl('https://www.coursera.org/embed');
+  };
+
+  const navigateToUrl = () => {
+    if (courseData && isCoursera(courseData.url)) {
+      setIframeUrl(courseData.url);
     }
   };
 
@@ -52,6 +64,7 @@ export default function Home() {
       } else {
         setCourseData(data.data);
         setIsValidCourse(true);
+        setIframeUrl(courseUrl); // Set the iframe URL to the course URL
       }
     } catch (error) {
       console.error('Error during request:', error);
@@ -106,13 +119,45 @@ export default function Home() {
           Exit Course
         </button>
 
-        {/* Left side - Coursera Website */}
-        <div className="w-1/2 h-full border-r border-gray-200">
-          <iframe
-            src="https://www.coursera.org"
-            className="w-full h-full"
-            title="Coursera"
-          />
+        {/* Left side - Coursera Website with Navigation */}
+        <div className="w-1/2 h-full border-r border-gray-200 flex flex-col">
+          {/* Navigation Controls */}
+          <div className={`p-4 border-b ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'}`}>
+            <div className="flex gap-2">
+              <button
+                onClick={loadCourseraPage}
+                className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
+                  isDarkMode 
+                    ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                    : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-200'
+                }`}
+              >
+                Coursera Home
+              </button>
+              <button
+                onClick={navigateToUrl}
+                className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
+                  isDarkMode 
+                    ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                    : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-200'
+                }`}
+              >
+                Course Page
+              </button>
+            </div>
+          </div>
+          
+          {/* Iframe */}
+          <div className="flex-1">
+            <iframe
+              ref={iframeRef}
+              src={iframeUrl}
+              className="w-full h-full"
+              title="Coursera"
+              sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+              referrerPolicy="origin"
+            />
+          </div>
         </div>
 
         {/* Right side - Chat Interface */}
