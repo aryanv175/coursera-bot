@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "../context/ThemeContext";
+import { AuthProvider } from "../context/AuthContext";
 
-const inter = Inter({ subsets: ["latin"] });
+const spaceGrotesk = Space_Grotesk({ 
+  subsets: ["latin"],
+  variable: '--font-space-grotesk',
+});
 
 export const metadata: Metadata = {
-  title: "Coursera Assistant",
-  description: "Your AI-powered Coursera learning companion",
+  title: "CourseMate - AI Learning Assistant",
+  description: "Your intelligent companion for Coursera courses",
 };
 
 export default function RootLayout({
@@ -15,8 +20,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={spaceGrotesk.variable}>
+      <body>
+        <AuthProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </AuthProvider>
+      </body>
     </html>
   );
 } 

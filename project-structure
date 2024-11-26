@@ -2,9 +2,14 @@ coursera-assistant/
 ├── frontend/
 │   ├── src/
 │   │   ├── app/
+│   │   │   ├── try/
+│   │   │   │   └── page.tsx
 │   │   │   ├── globals.css
 │   │   │   ├── layout.tsx
 │   │   │   └── page.tsx
+│   │   ├── context/
+│   │   │   └── ThemeContext.tsx
+│   ├── tsconfig.json
 │   ├── tailwind.config.js
 │   └── postcss.config.js
 └── backend/
