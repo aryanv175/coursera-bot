@@ -1,0 +1,11 @@
+for this project, use the following rules:
+- use the MERN stack only
+- do not use shadcn components for the UI
+- use tailwind for the styling
+- use express for the backend
+- use mongoose for the database
+- use react for the frontend
+- use next.js for the frontend
+- the frontend needs to be in the 'frontend' folder
+- the backend needs to be in the 'backend' folder
+

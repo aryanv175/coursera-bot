@@ -1,0 +1,11 @@
+coursera-assistant/
+├── frontend/
+│   ├── src/
+│   │   ├── app/
+│   │   ├── components/
+│   │   └── lib/
+├── backend/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   └── services/ 

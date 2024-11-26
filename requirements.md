@@ -1,5 +1,6 @@
 what do we need?
-- a website
+- a website:
+    -simple/base version of the app: it does not need to have the gemini integration. just needs to have a inputbox on the website, the user enters the url of the coursera course. the website then scrapes the information about the course from the given url, so that it can later utilize it for RAG. it prints the scaped information in the console and prints 'printed in console' on the webpage. that is all. 
 - sign in with google, only option. all we need.
 - shows the coursera course on the left 
 - chat bot on the right
