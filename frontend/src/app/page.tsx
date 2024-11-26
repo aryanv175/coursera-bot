@@ -5,22 +5,43 @@ import { useState } from 'react';
 export default function Home() {
   const [courseUrl, setCourseUrl] = useState('');
   const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+    console.log('Sending request to backend with URL:', courseUrl);
+    
     try {
-      const response = await fetch('http://localhost:5000/api/scrape', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ courseUrl }),
-      });
+      let response;
+      try {
+        console.log('Attempting to connect to port 5000...');
+        response = await fetch('http://localhost:5000/api/scrape', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ courseUrl }),
+        });
+      } catch (error) {
+        console.log('Port 5000 failed, trying port 5001...', error);
+        response = await fetch('http://localhost:5001/api/scrape', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ courseUrl }),
+        });
+      }
 
       const data = await response.json();
+      console.log('Response from backend:', data);
       setMessage(data.message);
     } catch (error) {
+      console.error('Error during request:', error);
       setMessage('Error scraping course data');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -40,9 +61,11 @@ export default function Home() {
         
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          disabled={isLoading}
+          className={`w-full bg-blue-500 text-white p-2 rounded 
+            ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}`}
         >
-          Scrape Course
+          {isLoading ? 'Scraping...' : 'Scrape Course'}
         </button>
       </form>
 

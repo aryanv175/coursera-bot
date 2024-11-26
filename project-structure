@@ -2,10 +2,11 @@ coursera-assistant/
 ├── frontend/
 │   ├── src/
 │   │   ├── app/
-│   │   ├── components/
-│   │   └── lib/
-├── backend/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   └── services/ 
+│   │   │   ├── globals.css
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx
+│   ├── tailwind.config.js
+│   └── postcss.config.js
+└── backend/
+    ├── server.js
+    └── package.json 
