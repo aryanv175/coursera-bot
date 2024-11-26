@@ -11,12 +11,34 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Add a test endpoint
-app.get('/api/test', (req, res) => {
-  console.log('Test endpoint hit');
-  res.json({ message: 'Backend is running!' });
+// Proxy endpoint for Coursera content
+app.get('/api/proxy-course', async (req, res) => {
+  try {
+    const { url } = req.query;
+    
+    if (!url) {
+      return res.status(400).json({ error: 'URL is required' });
+    }
+
+    const response = await axios.get(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+      }
+    });
+
+    // Set headers to allow iframe
+    res.setHeader('Content-Security-Policy', "frame-ancestors 'self'");
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    
+    // Send the HTML content
+    res.send(response.data);
+  } catch (error) {
+    console.error('Proxy error:', error);
+    res.status(500).json({ error: 'Failed to proxy course content' });
+  }
 });
 
+// Original scraping endpoint
 app.post('/api/scrape', async (req, res) => {
   console.log('Received scrape request:', req.body);
   
@@ -24,46 +46,46 @@ app.post('/api/scrape', async (req, res) => {
     const { courseUrl } = req.body;
     
     if (!courseUrl) {
-      console.log('No URL provided');
       return res.status(400).json({ error: 'Course URL is required' });
     }
 
-    console.log('Attempting to fetch:', courseUrl);
-    
+    if (!courseUrl.includes('coursera.org')) {
+      return res.status(400).json({ error: 'Please provide a valid Coursera URL' });
+    }
+
     const response = await axios.get(courseUrl);
-    console.log('Successfully fetched the page');
-    
     const $ = cheerio.load(response.data);
     
-    // Basic scraping of course content
     const courseTitle = $('h1').first().text().trim();
     const courseDescription = $('[data-e2e="course-description"]').text().trim();
     const syllabus = [];
     
-    // Get syllabus items
     $('[data-e2e="course-syllabus-item"]').each((i, elem) => {
       syllabus.push($(elem).text().trim());
     });
 
     const courseData = {
-      title: courseTitle,
-      description: courseDescription,
-      syllabus: syllabus
+      title: courseTitle || 'Course Title Not Found',
+      description: courseDescription || 'Description Not Found',
+      syllabus: syllabus.length ? syllabus : ['Syllabus Not Found'],
+      url: courseUrl
     };
 
     console.log('Successfully scraped course data:', courseData);
-    res.json({ message: 'Course data printed in console', data: courseData });
+    res.json({ message: 'Course data retrieved successfully', data: courseData });
   } catch (error) {
     console.error('Scraping error:', error.message);
-    res.status(500).json({ error: 'Failed to scrape course data', details: error.message });
+    res.status(500).json({ 
+      error: 'Failed to scrape course data', 
+      details: error.message 
+    });
   }
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = 5001;
 
 const server = app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log(`Test the server by visiting: http://localhost:${PORT}/api/test`);
 }).on('error', (err) => {
   if (err.code === 'EADDRINUSE') {
     console.log(`Port ${PORT} is busy. Trying port ${PORT + 1}`);
@@ -71,7 +93,5 @@ const server = app.listen(PORT, () => {
     app.listen(PORT + 1, () => {
       console.log(`Server running on port ${PORT + 1}`);
     });
-  } else {
-    console.error('Server error:', err);
   }
 }); 
