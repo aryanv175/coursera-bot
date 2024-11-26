@@ -15,7 +15,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [isValidCourse, setIsValidCourse] = useState(false);
   const [courseData, setCourseData] = useState<CourseData | null>(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [iframeUrl, setIframeUrl] = useState('about:blank');
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -88,65 +88,57 @@ export default function Home() {
   if (isValidCourse && courseData) {
     return (
       <div className={`flex h-screen ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-800'}`}>
-        {/* Theme Toggle Button */}
-        <button
-          onClick={toggleTheme}
-          className="absolute top-4 left-4 p-2 rounded-lg shadow-md transition-colors duration-200 z-50"
-          style={{
-            background: isDarkMode ? '#4B5563' : '#E5E7EB',
-            color: isDarkMode ? '#fff' : '#374151'
-          }}
-        >
-          {isDarkMode ? (
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-            </svg>
-          )}
-        </button>
-
-        {/* Exit Button */}
-        <button
-          onClick={handleExit}
-          className="absolute top-4 right-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-md transition-colors duration-200 flex items-center gap-2 z-50"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-          </svg>
-          Exit Course
-        </button>
-
         {/* Left side - Coursera Website with Navigation */}
         <div className="w-1/2 h-full border-r border-gray-200 flex flex-col">
           {/* Navigation Controls */}
           <div className={`p-4 border-b ${isDarkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'}`}>
-            <div className="flex gap-2">
+            <div className="flex justify-between items-center">
+              {/* Theme Toggle Button */}
               <button
-                onClick={loadCourseraPage}
-                className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
-                  isDarkMode 
-                    ? 'bg-gray-700 hover:bg-gray-600 text-white' 
-                    : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-200'
-                }`}
+                onClick={toggleTheme}
+                className="p-2 rounded-lg shadow-md transition-colors duration-200"
+                style={{
+                  background: isDarkMode ? '#4B5563' : '#E5E7EB',
+                  color: isDarkMode ? '#fff' : '#374151'
+                }}
               >
-                Coursera Home
+                {isDarkMode ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                )}
               </button>
-              <button
-                onClick={navigateToUrl}
-                className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
-                  isDarkMode 
-                    ? 'bg-gray-700 hover:bg-gray-600 text-white' 
-                    : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-200'
-                }`}
-              >
-                Course Page
-              </button>
+
+              {/* Navigation Buttons */}
+              <div className="flex gap-2">
+                <button
+                  onClick={loadCourseraPage}
+                  className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
+                    isDarkMode 
+                      ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                      : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-200'
+                  }`}
+                >
+                  Coursera Home
+                </button>
+                <button
+                  onClick={navigateToUrl}
+                  className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
+                    isDarkMode 
+                      ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                      : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-200'
+                  }`}
+                >
+                  Course Page
+                </button>
+              </div>
             </div>
           </div>
-          
+
           {/* Iframe */}
           <div className="flex-1">
             <iframe
@@ -159,6 +151,17 @@ export default function Home() {
             />
           </div>
         </div>
+
+        {/* Exit Button - Moved outside the navigation bar */}
+        <button
+          onClick={handleExit}
+          className="absolute top-4 right-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-md transition-colors duration-200 flex items-center gap-2 z-50"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+          Exit Course
+        </button>
 
         {/* Right side - Chat Interface */}
         <div className={`w-1/2 h-full ${isDarkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
@@ -222,6 +225,7 @@ export default function Home() {
     );
   }
 
+  // Initial page with dark mode as default
   return (
     <main className={`flex min-h-screen flex-col items-center justify-center p-24 ${
       isDarkMode ? 'bg-gray-900' : 'bg-gray-50'
@@ -229,11 +233,9 @@ export default function Home() {
       {/* Theme Toggle Button */}
       <button
         onClick={toggleTheme}
-        className="absolute top-4 right-4 p-2 rounded-lg shadow-md transition-colors duration-200"
-        style={{
-          background: isDarkMode ? '#4B5563' : '#E5E7EB',
-          color: isDarkMode ? '#fff' : '#374151'
-        }}
+        className={`absolute top-4 right-4 p-2 rounded-lg shadow-md transition-colors duration-200 ${
+          isDarkMode ? 'bg-gray-700 text-white' : 'bg-white text-gray-800'
+        }`}
       >
         {isDarkMode ? (
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -264,7 +266,7 @@ export default function Home() {
             className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ${
               isDarkMode 
                 ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
-                : 'border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                : 'bg-white border-gray-200 text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent'
             }`}
             required
           />
@@ -274,7 +276,8 @@ export default function Home() {
             disabled={isLoading}
             className={`w-full px-4 py-3 rounded-xl font-medium transition-all duration-200
               ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-md'}
-              ${isDarkMode ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
+              ${isDarkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600'}
+              text-white`}
           >
             {isLoading ? 'Loading...' : 'Start Learning'}
           </button>
