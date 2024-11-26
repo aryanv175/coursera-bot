@@ -1,5 +1,6 @@
 what do we need?
-- probably a website
+- a website
+- sign in with google, only option. all we need.
 - shows the coursera course on the left 
 - chat bot on the right
 - you ask questions and it answers, pretty basic
@@ -8,5 +9,4 @@ what do we need?
 - backend needs to scrape what material is present on the course page
 - add on
     - questionnaire or flashcard at the end
-    - authentication
     - pay wall certain features
