@@ -11,3 +11,8 @@ what do we need?
 - add on
     - questionnaire or flashcard at the end
     - pay wall certain features
+
+
+# remarks:
+    - accessing or getting the coursera page on our website is simply not possible because of the SAME_ORIGIN_POLICY. 
+    - we will just have to start over and make a chrome extension itself. the landing page can remain the same.
