@@ -22,7 +22,7 @@ export default function LandingPage() {
     if (!user) {
       setIsSignInModalOpen(true);
     } else {
-      router.push('/try');
+      window.open('https://github.com/aryanv175/coursera-extension/tree/main', '_blank');
     }
   };
 
@@ -142,7 +142,7 @@ export default function LandingPage() {
               onClick={handleGetStarted}
               className="glow relative px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-full hover:shadow-lg transition-all duration-200"
             >
-              {user ? 'Get Started' : 'Sign In to Start'}
+              {user ? 'Download the Extension' : 'Get the Extension'}
             </motion.button>
           </motion.div>
         </div>
